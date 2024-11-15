@@ -1,0 +1,6 @@
+-   Scan DOM elements
+-   Fullfill requirements
+    -   click all li tags before proceeding
+-   Find Submit button
+-   Await loading of next screen
+-   This page will be a review with the correct answer and the selected answer, find and click the "Next" button
