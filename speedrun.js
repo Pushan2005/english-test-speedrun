@@ -25,7 +25,7 @@ function triggerTextareaClick(textarea) {
 
 async function answerQuestion() {
     try {
-        // this is for that question type where you have to reaarange words correctly or something
+        // this is for that question type where you have to rearrange words correctly or something
         const passageOptionsDiv = document.querySelector(
             ".converse-pasage-options"
         );
