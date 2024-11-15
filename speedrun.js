@@ -94,7 +94,7 @@ async function nextScreen() {
     });
 }
 
-async function main() {
+async function handleQuestions() {
     while (true) {
         try {
             // check for start button
@@ -184,6 +184,58 @@ async function main() {
         } catch (error) {
             console.error("Error in main loop, restarting script...", error);
         }
+    }
+}
+
+async function handleHomeScreen() {
+    try {
+        // units don't load immediately, so wait for them to load
+        const loaded = await waitForElement(".progpercenttext");
+        if (!loaded) {
+            console.log("Activities didn't load..."); // not sure if this will ever run
+            return;
+        }
+
+        // units have loaded
+        const units = document.querySelectorAll(".progpercenttext");
+        const nextUnit = Array.from(units).find((unit) => {
+            return unit.innerHTML.trim() !== "100%";
+        });
+        await sleep(500);
+        nextUnit.click();
+    } catch (err) {
+        console.error("Error in handleHomeScreen function:", err);
+    }
+}
+
+// helper function for handleHomeScreen()
+function waitForElement(selector) {
+    return new Promise((resolve) => {
+        function check() {
+            const element = document.querySelector(selector);
+            if (element) {
+                resolve(element);
+            } else {
+                setTimeout(check, 100);
+            }
+        }
+        check();
+    });
+}
+
+async function main() {
+    try {
+        const dashboardPage = document.querySelector(".dashboard-page");
+        if (dashboardPage) {
+            console.log("Dashboard page detected, starting script...");
+            await handleHomeScreen();
+            return;
+        }
+
+        // assume we're not on the home page
+        await handleQuestions();
+    } catch (err) {
+        console.error("Error in main function:", err);
     }
 }
 

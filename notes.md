@@ -46,3 +46,7 @@
     class="iconfont icon-start icon-start_cloze icon_start_0 "
 ></button>
 ```
+
+# Home Page
+
+Try looking for a div whose class is `dashboard-page`
