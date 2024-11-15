@@ -13,6 +13,16 @@ function selectAllLabels() {
     });
 }
 
+function triggerTextareaClick(textarea) {
+    const mouseEvent = new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+    });
+
+    textarea.dispatchEvent(mouseEvent);
+}
+
 async function answerQuestion() {
     try {
         // this is for that question type where you have to reaarange words correctly or something
@@ -26,6 +36,22 @@ async function answerQuestion() {
                 button.click();
             });
             console.log("Answered using buttons in 'converse-pasage-options'.");
+            return;
+        }
+
+        // this is for that question type where you have to type in the text area
+        const textArea = document.querySelector("textarea");
+        if (textArea) {
+            console.log("Answering using text area...");
+            triggerTextareaClick(textArea);
+            // nvm these guys are smart, need to spoof the user typing
+
+            textArea.dispatchEvent(new KeyboardEvent("keydown", { key: "a" }));
+            const loremIpsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`;
+            textArea.value = loremIpsum;
+            textArea.dispatchEvent(new Event("input", { bubbles: true })); // even this wasn't enough lol
+            textArea.dispatchEvent(new Event("change", { bubbles: true }));
+            console.log("Answered using text area :-D");
             return;
         }
 
