@@ -148,6 +148,20 @@ async function main() {
                     );
                     return; // exit script cuz textarea is kryptonite
                 }
+
+                const recordingButton = document.querySelector(
+                    'button[aria-label="start-recording"]'
+                );
+                if (recordingButton) {
+                    console.log(
+                        "Speech based questions detected, stopping the script."
+                    );
+                    alert(
+                        "Speech based questions need to be done manually. Restart script once you're done."
+                    );
+                    return; // exit script cuz recording can't be automated
+                }
+
                 answerQuestion();
             }
 
