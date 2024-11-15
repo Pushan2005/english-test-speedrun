@@ -123,6 +123,21 @@ async function main() {
                 continue;
             }
 
+            // checking for retake test button
+            const retakeButton = Array.from(
+                document.querySelectorAll("button")
+            ).find(
+                (button) =>
+                    button.textContent.trim() === "Please retake the test."
+            ); // couldn't find a better selector for this
+            if (retakeButton) {
+                console.log("Retake test button detected, clicking...");
+                await sleep(500);
+                retakeButton.click();
+                await nextScreen();
+                continue;
+            }
+
             // check for submit button
             const submitBtn = document.querySelector("#testSubmit");
 
