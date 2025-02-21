@@ -1,6 +1,7 @@
 // keeping this helper function incase I need it later
 function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+    // return new Promise((resolve) => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 function selectAllLabels() {
