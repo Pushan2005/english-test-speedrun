@@ -42,7 +42,7 @@ Of course the answers won't be correct since there's no LLM to process the quest
 -   Text area based questions cannot be automated due to proctoring, i've tried bypassing with global click events and keystroke events. Spending anymore time to bypass this is no longer efficient use of my time. I may come back to this sometime in the future but no promises.
 -   Speech based questions can't be automated, so just say "English 123" or something for it to detect english words and move to next question.
 -   There exists a anti-cheat function in the backend which cleans up external javascript code that is running every time we go to the next module.The script needs to be run again inside the console.
-![image](https://github.com/user-attachments/assets/3dc8a4f2-3eaa-4848-823b-fc4ca5ef4516)
+    ![image](https://github.com/user-attachments/assets/3dc8a4f2-3eaa-4848-823b-fc4ca5ef4516)
 
 -   There's a chance that the anti-cheat may ask you to retake the test but you can just run the script again every time this happens.
 
@@ -51,3 +51,5 @@ Of course the answers won't be correct since there's no LLM to process the quest
 ## Feedback & Contributions
 
 If you found this script helpful or interesting, please consider giving the repository a ⭐ on GitHub.
+
+It's a very sub-optimal script, I wrote this last night but at least it works (somewhat lmao)

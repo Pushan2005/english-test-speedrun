@@ -203,6 +203,24 @@ async function handleHomeScreen() {
         });
         await sleep(500);
         nextUnit.click();
+        await sleep(500);
+
+        // find next sub-unit to complete (.link-progress innerHTML is "GO" instead of "REDO")
+        const subUnits = document.querySelectorAll(".link-progress");
+        const nextSubUnit = Array.from(subUnits).find((subUnit) => {
+            return subUnit.innerHTML.trim() === "GO";
+        });
+        await sleep(500);
+        nextSubUnit.click();
+        await sleep(500);
+
+        // find start button (.btn-popup-start)
+        const startButton = document.querySelector(".btn-popup-start");
+        await sleep(500);
+        startButton.click();
+        await nextScreen();
+        await sleep(2000);
+        await handleQuestions();
     } catch (err) {
         console.error("Error in handleHomeScreen function:", err);
     }
@@ -223,12 +241,33 @@ function waitForElement(selector) {
     });
 }
 
+async function handleAttemptNotFoundError() {
+    // find modal background(.fade .modal .show together)
+    const modalBackground = document.querySelector(".fade.modal.show");
+    await sleep(500);
+    modalBackground.click();
+    await sleep(500);
+
+    // click the cross button(.go-back)
+    const crossButton = document.querySelector(".go-back");
+    await sleep(500);
+    crossButton.click();
+    await sleep(500);
+}
+
 async function main() {
     try {
         const dashboardPage = document.querySelector(".dashboard-page");
         if (dashboardPage) {
             console.log("Dashboard page detected, starting script...");
             await handleHomeScreen();
+            return;
+        }
+
+        const errorModal = document.querySelector(".error-heading");
+        if (errorModal) {
+            console.log("Error modal detected, clicking outside the modal...");
+            handleAttemptNotFoundError();
             return;
         }
 
