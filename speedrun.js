@@ -1,7 +1,7 @@
 // keeping this helper function incase I need it later
 function sleep(ms) {
-    // return new Promise((resolve) => setTimeout(resolve, ms));
-    return new Promise((resolve) => setTimeout(resolve, 0));
+    return new Promise((resolve) => setTimeout(resolve, ms));
+    // return new Promise((resolve) => setTimeout(resolve, 50));
 }
 
 function selectAllLabels() {
@@ -87,6 +87,17 @@ async function nextScreen() {
                 childList: true,
                 subtree: true,
             });
+
+            const continueButton = Array.from(
+                document.querySelectorAll("button")
+            ).find((button) => button.textContent.trim() === "Continue");
+            if (continueButton) {
+                console.log(
+                    "Continue button detected in nextScreen(), clicking..."
+                );
+                await sleep(500);
+                continueButton.click();
+            }
             console.log("Waiting for next screen to load");
         } else {
             console.warn("Submit button is still disabled");
@@ -160,7 +171,7 @@ async function handleQuestions() {
                 if (textarea) {
                     console.log("Textarea detected, stopping the script.");
                     alert(
-                        "Typing questions need to be answered manually. Restart script once you're done."
+                        "Typing questions need to be answered manually. Reload (Ctrl + R) once you're done."
                     );
                     return; // exit script cuz textarea is kryptonite
                 }
@@ -173,7 +184,7 @@ async function handleQuestions() {
                         "Speech based questions detected, stopping the script."
                     );
                     alert(
-                        "Speech based questions need to be done manually. Restart script once you're done."
+                        "Speech based questions need to be done manually. Reload (Ctrl + R) once you're done."
                     );
                     return; // exit script cuz recording can't be automated
                 }
@@ -216,8 +227,12 @@ async function handleHomeScreen() {
         await sleep(500);
 
         // find start button (.btn-popup-start)
-        const startButton = document.querySelector(".btn-popup-start");
-        await sleep(500);
+        do {
+            startButton = document.querySelector(".btn-popup-start");
+            console.log("Start button not detected, waiting...");
+            await sleep(200);
+        } while (!startButton);
+        console.log("Start button found, clicking...");
         startButton.click();
         await nextScreen();
         await sleep(2000);
@@ -276,6 +291,7 @@ async function main() {
         await handleQuestions();
     } catch (err) {
         console.error("Error in main function:", err);
+        main();
     }
 }
 

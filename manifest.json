@@ -1,0 +1,16 @@
+{
+    "manifest_version": 3,
+    "name": "STEP Speedrun",
+    "version": "1.0",
+    "description": "Made for educational purposes only.",
+    "content_scripts": [
+        {
+            "matches": [
+                "https://english.steptest.in/mycourse",
+                "https://english.steptest.in/test"
+            ],
+            "js": ["speedrun.js"]
+        }
+    ],
+    "permissions": ["activeTab"]
+}
