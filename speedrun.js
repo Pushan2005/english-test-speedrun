@@ -73,19 +73,38 @@ async function nextScreen() {
             await sleep(500);
             submitBtn.click();
 
+            let resolved = false; // Flag to prevent multiple resolutions
+            let initialChildCount = document.body.children.length;
+
             const observer = new MutationObserver((mutations) => {
                 mutations.forEach((mutation) => {
-                    if (mutation.type === "childList") {
-                        console.log("Next screen loaded");
-                        observer.disconnect();
-                        resolve();
+                    if (mutation.type === "childList" && !resolved) {
+                        // Check if the number of children in the body has changed significantly
+                        if (
+                            Math.abs(
+                                document.body.children.length -
+                                    initialChildCount
+                            ) > 0
+                        ) {
+                            console.log(
+                                "Next screen loaded (MutationObserver - ChildList Change)"
+                            );
+                            observer.disconnect();
+                            resolved = true;
+                            resolve();
+                            return;
+                        } else {
+                            console.log(
+                                "Mutation detected, but child count hasn't changed significantly.  Ignoring."
+                            );
+                        }
                     }
                 });
             });
 
             observer.observe(document.body, {
                 childList: true,
-                subtree: true,
+                subtree: false, // IMPORTANT: Only observe direct children
             });
 
             const continueButton = Array.from(
@@ -98,7 +117,21 @@ async function nextScreen() {
                 await sleep(500);
                 continueButton.click();
             }
+
+            // Add a timeout in case the observer doesn't trigger
+            setTimeout(() => {
+                if (!resolved) {
+                    console.warn(
+                        "Timeout: Next screen not detected, resolving anyway."
+                    );
+                    observer.disconnect();
+                    resolved = true;
+                    resolve();
+                }
+            }, 5000); // Adjust timeout as needed
+
             console.log("Waiting for next screen to load");
+            return;
         } else {
             console.warn("Submit button is still disabled");
             resolve();
